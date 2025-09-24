@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SandBox - Cloud Infrastructure that just works</title>
+<link rel="icon" href="icon.png" type="image/png">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+  body { background: url('bk.png') no-repeat center center/cover; color: white; overflow-x: hidden; }
+
+  .section {
+    min-height: 100vh;
+    padding: 60px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    scroll-snap-align: start;
+  }
+
+  .headline {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    line-height: 3rem;
+  }
+
+  .rotating-text {
+    color: #00ffff;
+    border-right: 2px solid #00ffff; /* cursor */
+    padding-right: 2px;
+    white-space: nowrap;
+  }
+
+  @keyframes blink {
+    0%, 50%, 100% { border-color: #00ffff; }
+    25%, 75% { border-color: transparent; }
+  }
+
+  .rotating-text {
+    animation: blink 1s step-start infinite;
+  }
+
+  .button {
+    margin-top: 30px;
+    padding: 15px 35px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background: rgba(0,0,0,0.5);
+    border: 2px solid white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .button:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
+
+  .info {
+    margin-top: 40px;
+    max-width: 800px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #f0f0f0;
+    background: rgba(0,0,0,0.4);
+    padding: 20px 30px;
+    border-radius: 10px;
+  }
+
+  .page {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 50px;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .page h2 { font-size: 2.5rem; margin-bottom: 20px; color: #00ffff; }
+  .page p { font-size: 1.2rem; line-height: 1.6; color: #f0f0f0; max-width: 800px; }
+
+  @media (max-width:768px){
+    .headline{ font-size:2rem; }
+    .button{ font-size:1rem; padding:12px 25px; }
+    .info, .page p{ font-size:1rem; }
+    .page h2{ font-size:2rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<div class="section">
+  <div class="headline">
+    Cloud infrastructure that <span class="rotating-text" id="rotating-text"></span>
+  </div>
+  <a href="dashboard.html" class="button">Go to dashboard</a>
+  <div class="info">
+    Welcome to our SandBox! Experience infrastructure that scales with you. 
+    Our system is reliable, fast, and free to start. Whether you are hosting apps, 
+    running virtual machines, or deploying services, our platform ensures minimal downtime 
+    and maximum efficiency.
+  </div>
+</div>
+
+<!-- Features -->
+<div class="page">
+  <h2>Features</h2>
+  <p><strong>Effiecent:</strong> Maximum speed and efficiency for your workloads.</p>
+  <p><strong>Reliable:</strong> 99.99% uptime guarantees your services are always available.</p>
+  <p><strong>Global Reach:</strong> Deploy services worldwide with low-latency connections.</p>
+</div>
+
+<!-- Services -->
+<div class="page">
+  <h2>Services</h2>
+  <p>Compute: Run virtual machines, containers, and serverless workloads.</p>
+  <p>Storage: Secure, scalable storage solutions for any type of data.</p>
+  <p>Networking: Advanced networking options including load balancers and VPNs.</p>
+</div>
+
+<script>
+  const texts = ["just works.", "is zooming quick.", "is reliable.", "is free.", "is debian based.", "is effiecent."];
+  const display = document.getElementById('rotating-text');
+  let textIndex = 0;
+  let charIndex = 0;
+  let deleting = false;
+
+  function typeWriter() {
+    const currentText = texts[textIndex];
+
+    if(!deleting){
+      display.textContent = currentText.slice(0, charIndex + 1);
+      charIndex++;
+      if(charIndex === currentText.length){
+        deleting = true;
+        setTimeout(typeWriter, 1500); // pause at end
+        return;
+      }
+    } else {
+      display.textContent = currentText.slice(0, charIndex - 1);
+      charIndex--;
+      if(charIndex === 0){
+        deleting = false;
+        textIndex = (textIndex + 1) % texts.length;
+      }
+    }
+
+    setTimeout(typeWriter, deleting ? 80 : 120);
+  }
+
+  typeWriter();
+</script>
+
+</body>
+</html>
